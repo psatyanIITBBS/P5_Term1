@@ -35,32 +35,46 @@ This writeup provides the details of the project implementation.
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-A separate code ("DataExploration.py") is first written for exploring the dataset. The HOG features of the dataset images are first studied by plotting out many such images both from the "car" and the "non-car" types.
-
-This code reads in all the `vehicle` and `non-vehicle` images (Line#).  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+A separate code ("DataExploration.py") is first written for exploring the dataset. This code reads in all the `vehicle` and `non-vehicle` images (Line#110-111).  Then many random pairs were plotted and investigated (Line#144-160). Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
 ![alt text][image1]
 
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+The HOG features of the dataset images are first studied by plotting out many such images both from the "car" and the "non-car" types (Line#231-271) in all the channels.
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+
+
+The code has a flag ('featureExtractionFlag = False') for activating the feature extraction process with a particular set of parameters. Once the code is run with this flag set to 'True', it saves all the parameters and features for both the classes for future use. Once the features are calculated, they can be used to  then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+
+Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
 
 ![alt text][image2]
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+The final HOG parameters defined firstly by inspecting the feature images and determining which combination describes better the original image. Next i came up with the final result by validating the classifier results. 
+
+The chosen colorspace is the `YCrCb` color space. `HSV` also provides good results but eventually at the end `YCrCb` color space helps reduce false positive detections significantly.
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+A linear SVM was chosen to classify this specific project. The training process can be seen in the cell id#10 in `training.ipynb`. Using all available color-space channels (0,1 and 2) along with the HOG features, spatial features and color histograms, the accuracy of the classifier reached 0.99%. The train and test set consist of 80% and 20% respectively of the initial data set.
+
+In order to improve the classifier before creating the final video i performed a grid search using the tool `GridSearchCV` in cell id#13. The parameters tested are C (Penalty parameter C of the error term) and tol (Tolerance for stopping criteria). The Improvement was minor. From 0.9882 accuracy (default settings) increased to 0.9901 (Optimized)
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+To be able to capture all sizes of vehicles, different scales of rectangles must be apllied. A car may be bigger near the camera but smaller as it passes away. Consequently a combination of different scales is implemented. After many trials i ended up with the scales below:
+
+Scales =[1,1.3,1.5,1.8,2,2.4,3]
+
+The scale list resulted after validating the accuracy of the final video. The code is located in cell id#7 in `vehicle_detection.ipynb`.
+
+For visualization purposes a reduced number of scales has been applied to the image below:
+
+![scale_box_demonstration](http://i.imgur.com/HWQvPVK.png)
 
 ![alt text][image3]
 
