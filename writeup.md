@@ -39,9 +39,7 @@ A separate code ("DataExploration.py") is first written for exploring the datase
 
 ![alt text][image1]
 
-Then the HOG features of the dataset images were first studied by plotting out many such images both from the "car" and the "non-car" types (Line#231-271) from all the three channels. Different color spaces (RGB, HSV, LUV, HLS, YUV, YCrCb) and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`) were tried out and images were grabbed randomly from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
-
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(4, 4)` and `cells_per_block=(4, 4)`:
+Then the HOG features of the dataset images were first studied by plotting out many such images both from the "car" and the "non-car" types (Line#231-271) from all the three channels. Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(4, 4)` and `cells_per_block=(4, 4)`:
 
 ![alt text][image2]
 
@@ -49,15 +47,13 @@ The code has a flag ('featureExtractionFlag = False') for activating the feature
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-The final HOG parameters defined firstly by inspecting the feature images and determining which combination describes better the original image. Next i came up with the final result by validating the classifier results. 
+Different color spaces (RGB, HSV, LUV, HLS, YUV, YCrCb) and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`) were tried out and images were grabbed randomly from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like. 
 
-The chosen colorspace is the `YCrCb` color space. `HSV` also provides good results but eventually at the end `YCrCb` color space helps reduce false positive detections significantly.
+The final chosen colorspace is the `YCrCb` color space and the final HOG parameters chosen are: `orientations=9`, `pixels_per_cell=(4, 4)` and `cells_per_block=(4, 4)`.
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-A linear SVM was chosen to classify this specific project. The training process can be seen in the cell id#10 in `training.ipynb`. Using all available color-space channels (0,1 and 2) along with the HOG features, spatial features and color histograms, the accuracy of the classifier reached 0.99%. The train and test set consist of 80% and 20% respectively of the initial data set.
-
-In order to improve the classifier before creating the final video i performed a grid search using the tool `GridSearchCV` in cell id#13. The parameters tested are C (Penalty parameter C of the error term) and tol (Tolerance for stopping criteria). The Improvement was minor. From 0.9882 accuracy (default settings) increased to 0.9901 (Optimized)
+The feature space saved in the earlier step as a pickled file ("SpatHistHog_feature_set_KITTI.p") is now unpickled (Line#25) in another code "training.py". A linear SVM (`from sklearn.svm import LinearSVC`) has been chosen to classify the vehicle class and the non vehicle class in this project. The training process is carried out using all available color-space channels (0,1 and 2) along with the HOG features (hog_channel = "ALL"), spatial features (spatial_size = (32, 32)) and color histograms (hist_bins = 64). The total data set has been split up into randomized training and test sets using `from sklearn.model_selection import train_test_split`. The train and test set contain 80% and 20% respectively of the initial data set. In order to improve the classifier before creating the final video a grid search using the tool `from sklearn.model_selection import GridSearchCV`. The parameters tested are C (Penalty parameter C of the error term) and tol (Tolerance for stopping criteria). After using the optimized valuess for these parameters (C=4.6415888336e-05,tol=0.0001), The accuracy of the classifier reached more than 0.99%.
 
 ### Sliding Window Search
 
