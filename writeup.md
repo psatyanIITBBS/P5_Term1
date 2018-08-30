@@ -15,12 +15,13 @@ The goals/steps of this project are the following:
 [//]: # (Image References)
 [image1]: ./output_images/car_not_car.jpg
 [image2]: ./output_images/HOG_features_of_car_image.jpg
-[image3]: ./examples/sliding_windows.jpg
-[image4]: ./examples/sliding_window.jpg
-[image5]: ./examples/bboxes_and_heat.png
-[image6]: ./examples/labels_map.png
-[image7]: ./examples/output_bboxes.png
-[video1]: ./project_video.mp4
+[image3]: ./examples/all_features_of_carimage.jpg
+[image4]: ./examples/test1_tracked.jpg
+[image5]: ./examples/test2_tracked.jpg
+[image6]: ./examples/test3_tracked.png
+[image7]: ./examples/test4_tracked.png
+[image8]: ./examples/HeatMap.jpg.png
+[video1]: ./project_video_marked.mp4
 
 ### Here, I have considered the [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points individually and describeed how I addressed each point in my implementation.  
 
@@ -53,23 +54,22 @@ The final chosen colorspace is the `YCrCb` color space and the final HOG paramet
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-The feature space saved in the earlier step as a pickled file ("SpatHistHog_feature_set_KITTI.p") is now unpickled (Line#25) in another code "training.py". A linear SVM (`from sklearn.svm import LinearSVC`) has been chosen to classify the vehicle class and the non vehicle class in this project. The training process is carried out using all available color-space channels (0,1 and 2) along with the HOG features (hog_channel = "ALL"), spatial features (spatial_size = (32, 32)) and color histograms (hist_bins = 64). The total data set has been split up into randomized training and test sets using `from sklearn.model_selection import train_test_split`. The train and test set contain 80% and 20% respectively of the initial data set. In order to improve the classifier before creating the final video a grid search using the tool `from sklearn.model_selection import GridSearchCV`. The parameters tested are C (Penalty parameter C of the error term) and tol (Tolerance for stopping criteria). After using the optimized valuess for these parameters (C=4.6415888336e-05,tol=0.0001), The accuracy of the classifier reached more than 0.99%.
+The feature space saved in the earlier step as a pickled file ("SpatHistHog_feature_set_KITTI.p") is now unpickled (Line#25) in another code "training.py". A linear SVM (`from sklearn.svm import LinearSVC`) has been chosen to classify the vehicle class and the non vehicle class in this project. The training process is carried out using all available color-space channels (0,1 and 2) along with the HOG features (hog_channel = "ALL"), spatial features (spatial_size = (32, 32)) and color histograms (hist_bins = 64). The feature without and with normalization is shown below:
+
+![alt text][image3]
+
+The total data set has been split up into randomized training and test sets using `from sklearn.model_selection import train_test_split`. The train and test set contain 80% and 20% respectively of the initial data set. In order to improve the classifier before creating the final video a grid search using the tool `from sklearn.model_selection import GridSearchCV`. The parameters tested are C (Penalty parameter C of the error term) and tol (Tolerance for stopping criteria). After using the optimized valuess for these parameters (C=4.6415888336e-05,tol=0.0001), The accuracy of the classifier reached more than 0.99%.
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-To be able to capture all sizes of vehicles, different scales of rectangles must be apllied. A car may be bigger near the camera but smaller as it passes away. Consequently a combination of different scales is implemented. After many trials i ended up with the scales below:
+The sliding window search has been implemented to search the features of a vehicle within a specified size of window that slides accross the image. Wherever it finds a match after running through the classifier it marks it as a vecle bounding box. An example of one such search is shown below.
 
-Scales =[1,1.3,1.5,1.8,2,2.4,3]
 
-The scale list resulted after validating the accuracy of the final video. The code is located in cell id#7 in `vehicle_detection.ipynb`.
+This part is implemented in the code `VehicleTracking.py`. A car may seem bigger if it is nearer in the camera frame and seem smaller as it goes far away in the frame. Consequently, a combination of different scales is implemented to be able to capture all sizes of vehicles.  After many trials i ended up with the scales below:
 
-For visualization purposes a reduced number of scales has been applied to the image below:
-
-![scale_box_demonstration](http://i.imgur.com/HWQvPVK.png)
-
-![alt text][image3]
+scales = [1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,3,3.5,4]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
@@ -81,12 +81,13 @@ Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spat
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+
+Here's a [link to my video result](./project_video_marked.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+I recorded the positions of positive detections in each frame of the video (Line#399-403).  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
