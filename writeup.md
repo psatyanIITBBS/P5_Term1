@@ -35,20 +35,18 @@ This writeup provides the details of the project implementation.
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-A separate code ("DataExploration.py") is first written for exploring the dataset. This code reads in all the `vehicle` and `non-vehicle` images (Line#110-111).  Then many random pairs were plotted and investigated (Line#144-160). Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+A separate code ("DataExploration.py") is first written for exploring the dataset. This code reads in all the `vehicle` and `non-vehicle` images (Line#110-111).  Then many random pairs were plotted and investigated (Line#144-160). Here is an example of one such pair of the `vehicle` and `non-vehicle` classes:
 
 ![alt text][image1]
 
-The HOG features of the dataset images are first studied by plotting out many such images both from the "car" and the "non-car" types (Line#231-271) in all the channels.
+Then the HOG features of the dataset images were first studied by plotting out many such images both from the "car" and the "non-car" types (Line#231-271) from all the three channels. Different color spaces (RGB, HSV, LUV, HLS, YUV, YCrCb) and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`) were tried out and images were grabbed randomly from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-
-
-The code has a flag ('featureExtractionFlag = False') for activating the feature extraction process with a particular set of parameters. Once the code is run with this flag set to 'True', it saves all the parameters and features for both the classes for future use. Once the features are calculated, they can be used to  then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
-
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(4, 4)` and `cells_per_block=(4, 4)`:
 
 
 ![alt text][image2]
+
+The code has a flag ('featureExtractionFlag = False') for activating the feature extraction process with a particular set of parameters. Once the code is run with this flag set to 'True', it saves all the parameters and features for both the classes for future use. Once the features are calculated,
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
