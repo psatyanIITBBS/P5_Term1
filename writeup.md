@@ -43,10 +43,9 @@ Then the HOG features of the dataset images were first studied by plotting out m
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(4, 4)` and `cells_per_block=(4, 4)`:
 
-
 ![alt text][image2]
 
-The code has a flag ('featureExtractionFlag = False') for activating the feature extraction process with a particular set of parameters. Once the code is run with this flag set to 'True', it saves all the parameters and features for both the classes for future use. Once the features are calculated,
+The code has a flag ('featureExtractionFlag = False') for activating the feature extraction process with a particular set of parameters. Once the parameters were fixed by the above experimnents on the HOG parameters, the flag was set to 'True' and the code was run. Once the code is run with this flag set to 'True', it saves all the parameters and features for both the classes as a pickled file "SpatHistHog_feature_set_KITTI.p" for future use in training a classifier.
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
