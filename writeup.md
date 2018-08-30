@@ -16,11 +16,12 @@ The goals/steps of this project are the following:
 [image1]: ./output_images/car_not_car.jpg
 [image2]: ./output_images/HOG_features_of_car_image.jpg
 [image3]: ./examples/all_features_of_carimage.jpg
-[image4]: ./examples/test1_tracked.jpg
-[image5]: ./examples/test2_tracked.jpg
-[image6]: ./examples/test3_tracked.png
-[image7]: ./examples/test4_tracked.png
-[image8]: ./examples/HeatMap.jpg.png
+[image4]: ./output_images/windowSliding.jpg
+[image5]: ./output_images/test1_tracked.jpg
+[image6]: ./output_images/test2_tracked.jpg
+[image7]: ./output_images/test3_tracked.png
+[image8]: ./output_images/test4_tracked.png
+[image9]: ./output_images/HeatMap.jpg.png
 [video1]: ./project_video_marked.mp4
 
 ### Here, I have considered the [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points individually and describeed how I addressed each point in my implementation.  
@@ -64,10 +65,11 @@ The total data set has been split up into randomized training and test sets usin
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-The sliding window search has been implemented to search the features of a vehicle within a specified size of window that slides accross the image. Wherever it finds a match after running through the classifier it marks it as a vecle bounding box. An example of one such search is shown below.
+This part is implemented in the code `VehicleTracking.py`. The sliding window search has been implemented to search the features of a vehicle within a specified size of window that slides accross the image. Wherever it finds a match after running through the classifier it marks it as a vecle bounding box. An example of one such search is shown below.
 
+![alt text][image4]
 
-This part is implemented in the code `VehicleTracking.py`. A car may seem bigger if it is nearer in the camera frame and seem smaller as it goes far away in the frame. Consequently, a combination of different scales is implemented to be able to capture all sizes of vehicles.  After many trials i ended up with the scales below:
+However, a constant window size will not be able to capture all the vehicles in a frame. A car may seem bigger if it is nearer in the camera frame and seem smaller as it goes far away in the frame. Consequently, a combination of different scales is implemented to be able to capture all sizes of vehicles.  After many trials i ended up with the scales below:
 
 scales = [1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,3,3.5,4]
 
@@ -75,7 +77,10 @@ scales = [1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,3,3.5,4]
 
 Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
 
-![alt text][image4]
+![alt text][image5]
+![alt text][image6]
+![alt text][image7]
+![alt text][image8]
 ---
 
 ### Video Implementation
