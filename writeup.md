@@ -17,7 +17,7 @@ The goals/steps of this project are the following:
 [image2]: ./output_images/HOG_features_of_car_image.jpg
 [image3]: ./examples/all_features_of_carimage.jpg
 [image4]: ./output_images/windowSliding.jpg
-[image5]: ./output_images/test1_tracked.jpg
+[image5]: ./output_images/DetectedRegion.jpg
 [image6]: ./output_images/test2_tracked.jpg
 [image7]: ./output_images/test3_tracked.png
 [image8]: ./output_images/test4_tracked.png
@@ -75,12 +75,9 @@ scales = [1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,3,3.5,4]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+When the above variable scaling is applied on the test video, the sliding window search could find the location of the vehicles quite reasonably. Here are some example images:
 
 ![alt text][image5]
-![alt text][image6]
-![alt text][image7]
-![alt text][image8]
 ---
 
 ### Video Implementation
