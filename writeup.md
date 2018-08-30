@@ -18,8 +18,8 @@ The goals/steps of this project are the following:
 [image3]: ./output_images/all_features_of_carimage.jpg
 [image4]: ./output_images/windowSliding.jpg
 [image5]: ./output_images/DetectedRegion.jpg
-[image6]: ./output_images/HeatMap.jpg.png
-[video1]: ./project_video_marked.mp4
+[image6]: ./output_images/HeatMap.jpg
+[video1]: ./output_images/project_video_marked.mp4
 
 ### Here, I have considered the [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points individually and describeed how I addressed each point in my implementation.  
 
