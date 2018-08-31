@@ -185,9 +185,9 @@ def process_bboxes(image,hot_windows,threshold,show_heatmap=False):
       
     global heat
     global count
-    if count >8:
+    if count >5:
         #heat = np.zeros_like(image[:,:,0]).astype(np.float)
-        heat[heat >= 5] = 0
+        heat[heat >= 4] = 0
         count = 0
     # Add heat to each box in box list
     heat = add_heat(heat,hot_windows)
@@ -333,8 +333,9 @@ def search_windows(img, windows, clf, scaler, color_space='RGB',
         test_features = scaler.transform(np.array(features).reshape(1, -1))
         #6) Predict using your classifier
         prediction = clf.predict(test_features)
+        prediction_confidence = clf.decision_function(test_features)
         #7) If positive (prediction == 1) then save the window
-        if prediction == 1:
+        if prediction == 1 and prediction_confidence > 0.95:
             on_windows.append(window)
     #8) Return windows for positive detections
     return on_windows
@@ -402,7 +403,7 @@ def processSingleImage(image):
         else:
             hot_windows = hot_windows + find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
      
-    bbox_list,heatmap = process_bboxes(image,hot_windows,threshold=3,show_heatmap=True)
+    bbox_list,heatmap = process_bboxes(image,hot_windows,threshold=2,show_heatmap=True)
     draw_img = draw_car_boxes(image, bbox_list)
     
     
@@ -464,8 +465,8 @@ if processTestImageFlag == True:
 if processTestVideoFlag == True:
     
     heat = np.zeros_like(image[:,:,0]).astype(np.float)
-    vid_output = './output_Videos/project_video_marked.mp4'
-    #project_video = VideoFileClip('project_video.mp4').subclip(15,17)
+    vid_output = './output_Videos/project_video_marked_02.mp4'
+    #project_video = VideoFileClip('project_video.mp4').subclip(40,42)
     project_video = VideoFileClip('project_video.mp4')
     result_video = project_video.fl_image(processSingleImage)
     result_video.write_videofile(vid_output, audio=False)    
