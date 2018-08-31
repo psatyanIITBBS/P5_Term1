@@ -403,7 +403,7 @@ def processSingleImage(image):
         else:
             hot_windows = hot_windows + find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
      
-    bbox_list,heatmap = process_bboxes(image,hot_windows,threshold=2,show_heatmap=True)
+    bbox_list,heatmap = process_bboxes(image,hot_windows,threshold=3,show_heatmap=True)
     draw_img = draw_car_boxes(image, bbox_list)
     
     
